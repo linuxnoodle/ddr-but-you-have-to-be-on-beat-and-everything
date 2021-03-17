@@ -1,3 +1,4 @@
+
 CC=g++
 CPPFLAGS=-Wall -Wextra -pedantic -ansi -O2 -std=c++11 -lSDL2 
 
