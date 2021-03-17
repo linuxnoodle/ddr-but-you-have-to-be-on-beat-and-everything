@@ -12,4 +12,7 @@ make
 ./ddr-but-you-have-to-be-on-beat-and-everything
 ```
 ## TODO:
-- basically everything lmao
+- fix horrible void* hack for circular dependency in inputManager
+- add music
+- add menuing
+- (basically removed everything when moving from ncurses to sdl2)

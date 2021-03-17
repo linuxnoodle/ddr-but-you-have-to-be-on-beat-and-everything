@@ -1,5 +1,15 @@
 #pragma once
+#include <iostream>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_events.h>
+#include <SDL2/SDL_timer.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_render.h>
+#include <SDL2/SDL_surface.h>
+#include <SDL2/SDL_video.h>
+#include <SDL2/SDL_events.h>
+#include <SDL2/SDL_keycode.h>
+#include "../include/inputManager.hpp"
 
 class game {
     public:
@@ -10,10 +20,14 @@ class game {
         void render();
         void clean();
 
-        bool running() { return isRunning; };
+        bool isRunning;
+        static SDL_Event event;
 
     private:
-        bool isRunning;
+        SDL_Texture *receptor;
         SDL_Window *window;
         SDL_Renderer *renderer;
+
+        SDL_Rect destinationRect;
+
 };
