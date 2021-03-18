@@ -1,49 +1,57 @@
 #include "../include/inputManager.hpp"
-
 // keyUpOrDown:
 // false for down
 // true for up
-void parseKey(SDL_Keysym key, bool keyUpOrDown, void* Game){
-    // garbage hack I have to do to get around circular dependency
-    // could most likely do better, but that's for later
-    game* ddr = (game*)Game;
-    if (keyUpOrDown){
+int parseKey(SDL_Keysym key, bool keyUpOrDown, bool (&activatedReceptors)[4]){
+    if (!keyUpOrDown){
         switch (key.sym){
-            case SDLK_a:
-                                
+            case SDLK_a:{
+                activatedReceptors[0] = true;
                 break;
-            case SDLK_s:
-                
+            }
+            case SDLK_s:{
+                activatedReceptors[1] = true;
                 break;
-            case SDLK_k:
-                
+            }
+            case SDLK_k:{
+                activatedReceptors[2] = true;                
                 break;
-            case SDLK_l:
-                
+            }
+            case SDLK_l:{
+                activatedReceptors[3] = true;                
                 break;
-            case SDLK_ESCAPE:
-                ddr->isRunning = false;
+            }
+            case SDLK_ESCAPE:{
+                return 1; 
                 break;
-            default:
+            }
+            default:{
                 break;
+            }
         }
     } else {
         switch (key.sym){
-            case SDLK_a:
-                
+            case SDLK_a:{
+                activatedReceptors[0] = false;                
                 break;
-            case SDLK_s:
-                
+            }
+            case SDLK_s:{
+                activatedReceptors[1] = false;                
                 break;
-            case SDLK_k:
-                
+            }
+            case SDLK_k:{
+                activatedReceptors[2] = false;                
                 break;
-            case SDLK_l:
-                
+            }
+            case SDLK_l:{
+                activatedReceptors[3] = false;                
                 break;
-            default:
+            }
+            default:{
                 break;
+            }
         }
         
     }
+    return 0;
 }

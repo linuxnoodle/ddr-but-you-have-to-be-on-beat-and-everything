@@ -2,7 +2,7 @@
 It's like DDR, but you have to be on beat, and everything.
 
 ## Dependencies:
-- sdl2
+- sdl2 + sdl2\_image
 - make + g++
 ## Running:
 ```
@@ -12,7 +12,6 @@ make
 ./ddr-but-you-have-to-be-on-beat-and-everything
 ```
 ## TODO:
-- fix horrible void* hack for circular dependency in inputManager
-- add music
+- finish add music
 - add menuing
 - (basically removed everything when moving from ncurses to sdl2)

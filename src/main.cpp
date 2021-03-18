@@ -11,7 +11,7 @@ int main(){
     game ddr = game();
     ddr.init("DDRBYHTBOBAE", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, false);
     
-    while (ddr.isRunning){
+    while (ddr.getIfRunning()){
         frameStart = SDL_GetTicks();
         
         ddr.handleEvents();
