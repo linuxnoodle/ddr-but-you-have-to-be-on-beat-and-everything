@@ -1,5 +1,4 @@
 #pragma once
-#include "inputManager.hpp"
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_audio.h>
@@ -13,7 +12,9 @@
 #include <SDL2/SDL_keycode.h>
 #include <SDL2/SDL_stdinc.h>
 #include <SDL2/SDL_log.h>
-#include "../include/inputManager.hpp"
+
+#include "inputManager.hpp"
+#include "mapManager.hpp"
 
 class game {
     public:
@@ -30,10 +31,10 @@ class game {
         static SDL_Event event;
         bool activatedReceptors[4];
 
-        /*Uint8 *wavBuffer;
+        Uint8 *wavBuffer;
         SDL_AudioSpec wavSpec;
         Uint32 wavLength;
-        SDL_AudioDeviceID deviceId;*/
+        SDL_AudioDeviceID deviceId;
 
     private:
         SDL_Texture *receptor;

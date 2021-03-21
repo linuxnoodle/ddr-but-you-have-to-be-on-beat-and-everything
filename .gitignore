@@ -1,2 +1,6 @@
-./obj/*
 ddr-but-you-have-to-be-on-beat-and-everything
+compile_flags.txt
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile

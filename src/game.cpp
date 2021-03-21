@@ -1,5 +1,5 @@
 #include "../include/game.hpp"
-#include <SDL2/SDL_audio.h>
+#include <SDL2/SDL_log.h>
 
 void game::init(const char* title, int x, int y, int width, int height, bool fullscreen){
     int flags = (fullscreen) ? SDL_WINDOW_FULLSCREEN : 0; 
@@ -13,9 +13,13 @@ void game::init(const char* title, int x, int y, int width, int height, bool ful
         
         // Loads audio
         // TODO: make audio loading dynamic with mapsets, and move their handling into music.cpp
-        /*SDL_LoadWAV("maps/linx-msuic/linx-msuic.wav", &wavSpec, &wavBuffer, &wavLength);
-        deviceId = SDL_OpenAudioDevice(NULL, 0, &wavSpec, NULL, 0);
-        SDL_QueueAudio(deviceId, wavBuffer, wavLength);*/
+        loadMapFiles();
+        if (mapList.size() > 0){    
+            //SDL_LoadWAV(mapList[0].getMapPath().c_str(), &wavSpec, &wavBuffer, &wavLength);
+            //deviceId = SDL_OpenAudioDevice(NULL, 0, &wavSpec, NULL, 0);
+            //SDL_QueueAudio(deviceId, wavBuffer, wavLength);
+            SDL_Log("why does this crash");
+        }
 
         // Loads images
         SDL_Surface *image = IMG_Load("noteskins/receptor.png");
@@ -27,6 +31,8 @@ void game::init(const char* title, int x, int y, int width, int height, bool ful
         destinationRect.h = 128;
         destinationRect.x = 128;
         
+        loadMapFiles();
+
         isRunning = true;
     } else {
         SDL_Log("Failed to initialize.");
