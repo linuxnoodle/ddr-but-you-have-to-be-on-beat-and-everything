@@ -1,6 +1,4 @@
 #include "../include/game.hpp"
-#include <SDL2/SDL_audio.h>
-#include <SDL2/SDL_log.h>
 
 void game::init(const char* title, int x, int y, int width, int height, bool fullscreen){
     int flags = (fullscreen) ? SDL_WINDOW_FULLSCREEN : 0; 
@@ -11,16 +9,14 @@ void game::init(const char* title, int x, int y, int width, int height, bool ful
         if (renderer){
             SDL_SetRenderDrawColor(renderer, 25, 25, 25, 255);
         }
+
+        screenHeight = height;
+        screenWidth = width;
         
-        // Loads audio
-        // TODO: make audio loading dynamic with mapsets, and move their handling into music.cpp
+        // Passes map audio to playSong
         loadMapFiles();
         if (mapList.size() > 0){    
-            SDL_LoadWAV(mapList[0].getSongPath().c_str(), &wavSpec, &wavBuffer, &wavLength);
-            deviceId = SDL_OpenAudioDevice(NULL, 0, &wavSpec, NULL, 0);
-            int success = SDL_QueueAudio(deviceId, wavBuffer, wavLength);
-            SDL_PauseAudioDevice(deviceId, 0);
-            std::cout << "Song Path: " << mapList[0].getSongPath().c_str() << " Device ID: " << deviceId << " Audio Queued: " << success << "\n"; 
+            playSong(mapList[0].getSongPath().c_str());
         }
 
         // Loads images
@@ -28,8 +24,8 @@ void game::init(const char* title, int x, int y, int width, int height, bool ful
         receptor = SDL_CreateTextureFromSurface(renderer, image);
         SDL_FreeSurface(image);
 
-        destinationRect.x = 256;
-        destinationRect.y = 512;
+        destinationRect.x = 2 * (screenWidth * 0.125);
+        destinationRect.y = screenHeight * 0.9;
         destinationRect.h = 128;
         destinationRect.x = 128;
         
@@ -71,7 +67,9 @@ void game::handleEvents(){
     }
 }
 
-void game::update(){}
+void game::update(int frameTime){
+    
+}
 
 void game::render(){
     SDL_RenderClear(renderer);
@@ -81,13 +79,13 @@ void game::render(){
         if (activatedReceptors[i]){
             destinationRect.h = 100;
             destinationRect.w = 100;
-            destinationRect.x = 270 + (213 * i);
-            destinationRect.y = 525;
+            destinationRect.x = screenWidth * 0.373 + (135 * i);
+            destinationRect.y = screenHeight * 0.865;
         } else {
             destinationRect.h = 128;
             destinationRect.w = 128;
-            destinationRect.x = 256 + (213 * i);
-            destinationRect.y = 512;
+            destinationRect.x = screenWidth * 0.365 + (135 * i);
+            destinationRect.y = screenHeight * 0.85;
         }
         SDL_RenderCopy(renderer, receptor, NULL, &destinationRect);
     }

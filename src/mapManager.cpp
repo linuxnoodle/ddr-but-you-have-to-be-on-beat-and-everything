@@ -12,6 +12,22 @@ std::vector<map> mapList;
  *}
  */
 
+int map::initializeNotes(){
+    if (std::filesystem::exists(filePath)){
+        unsigned int length = 0;
+        std::filebuf fileBuffer;
+        fileBuffer.open(filePath.c_str(), std::ios::in);
+        std::istream mapFile(&fileBuffer);
+
+        mapFile.read((char*)&length, sizeof(length));
+        notes.resize(length);
+        if (length > 0)
+            mapFile.read((char*)&notes[0], length * sizeof(note));
+        return 0;
+    } else {
+        return -1;
+    }
+}
 void loadMapFiles(){
     // Loops through the maps folder, and looks through it for directories, 
     // then looks in those directories for .wav and .map files

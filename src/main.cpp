@@ -6,16 +6,16 @@ int main(){
     const int frameDelay = 1000/targetFPS;
 
     Uint32 frameStart;
-    int frameTime;
+    int frameTime = 0;
 
     game ddr = game();
-    ddr.init("DDRBYHTBOBAE", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, false);
+    ddr.init("DDRBYHTBOBAE", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1920, 1080, true);
     
     while (ddr.getIfRunning()){
         frameStart = SDL_GetTicks();
         
         ddr.handleEvents();
-        ddr.update();
+        ddr.update(frameTime);
         ddr.render();
 
         frameTime = SDL_GetTicks() - frameStart;

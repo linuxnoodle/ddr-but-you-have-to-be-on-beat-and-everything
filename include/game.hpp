@@ -14,6 +14,7 @@
 
 #include "inputManager.hpp"
 #include "mapManager.hpp"
+#include "music.hpp"
 
 class game {
     public:
@@ -21,19 +22,16 @@ class game {
 
         void handleEvents();
         void addEvent(Uint32 type);
-        void update();
+        void update(int frameTime);
         void render();
         void clean();
 
         bool getIfRunning(){ return isRunning; };
+        int getScreenWidth(){ return screenWidth; };
+        int getScreenHeight(){ return screenHeight; };
 
         static SDL_Event event;
         bool activatedReceptors[4];
-
-        Uint8 *wavBuffer;
-        SDL_AudioSpec wavSpec;
-        Uint32 wavLength;
-        SDL_AudioDeviceID deviceId;
 
     private:
         SDL_Texture *receptor;
@@ -43,4 +41,5 @@ class game {
         SDL_Rect destinationRect;
         
         bool isRunning;
+        int screenWidth, screenHeight;
 };
