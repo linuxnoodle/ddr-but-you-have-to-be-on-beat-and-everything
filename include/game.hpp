@@ -11,7 +11,6 @@
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_keycode.h>
 #include <SDL2/SDL_stdinc.h>
-#include <SDL2/SDL_log.h>
 
 #include "inputManager.hpp"
 #include "mapManager.hpp"

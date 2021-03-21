@@ -1,4 +1,5 @@
 #include "../include/game.hpp"
+#include <SDL2/SDL_audio.h>
 #include <SDL2/SDL_log.h>
 
 void game::init(const char* title, int x, int y, int width, int height, bool fullscreen){
@@ -15,10 +16,11 @@ void game::init(const char* title, int x, int y, int width, int height, bool ful
         // TODO: make audio loading dynamic with mapsets, and move their handling into music.cpp
         loadMapFiles();
         if (mapList.size() > 0){    
-            //SDL_LoadWAV(mapList[0].getMapPath().c_str(), &wavSpec, &wavBuffer, &wavLength);
-            //deviceId = SDL_OpenAudioDevice(NULL, 0, &wavSpec, NULL, 0);
-            //SDL_QueueAudio(deviceId, wavBuffer, wavLength);
-            SDL_Log("why does this crash");
+            SDL_LoadWAV(mapList[0].getSongPath().c_str(), &wavSpec, &wavBuffer, &wavLength);
+            deviceId = SDL_OpenAudioDevice(NULL, 0, &wavSpec, NULL, 0);
+            int success = SDL_QueueAudio(deviceId, wavBuffer, wavLength);
+            SDL_PauseAudioDevice(deviceId, 0);
+            std::cout << "Song Path: " << mapList[0].getSongPath().c_str() << " Device ID: " << deviceId << " Audio Queued: " << success << "\n"; 
         }
 
         // Loads images
@@ -31,8 +33,6 @@ void game::init(const char* title, int x, int y, int width, int height, bool ful
         destinationRect.h = 128;
         destinationRect.x = 128;
         
-        loadMapFiles();
-
         isRunning = true;
     } else {
         SDL_Log("Failed to initialize.");
@@ -98,7 +98,7 @@ void game::render(){
 void game::clean(){
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
-    //SDL_CloseAudioDevice(deviceId);
-    //SDL_FreeWAV(wavBuffer);
+    SDL_CloseAudioDevice(deviceId);
+    SDL_FreeWAV(wavBuffer);
     SDL_Quit();
 }

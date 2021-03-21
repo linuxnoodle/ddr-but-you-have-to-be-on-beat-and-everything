@@ -12,7 +12,6 @@ cmake .
 make
 ```
 ## TODO:
-- finish adding music
 - finish implementing dynamic map loading
 - add actual gameplay
-- add menuing
+- add menuing (map selector)
