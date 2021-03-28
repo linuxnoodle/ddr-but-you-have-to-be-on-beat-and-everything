@@ -15,6 +15,7 @@
 #include "inputManager.hpp"
 #include "mapManager.hpp"
 #include "music.hpp"
+#include "sceneManager.hpp"
 
 class game {
     public:

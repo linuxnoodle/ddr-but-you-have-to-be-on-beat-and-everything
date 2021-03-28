@@ -3,10 +3,9 @@
 #include <filesystem>
 #include <fstream>
 
-// basically a linked list node that holds length and distance 
 struct note {
-    float length, distanceFromPrevious;
-    note* nextNote;
+    int channel;
+    float length, distance, speed;
 };
 
 class map {
@@ -27,5 +26,7 @@ class map {
         int initializeNotes();
 };
 
-extern std::vector<map> mapList;
+void writeMapFile();
 void loadMapFiles();
+
+extern std::vector<map> mapList;

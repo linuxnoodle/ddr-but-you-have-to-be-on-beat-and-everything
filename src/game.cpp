@@ -13,8 +13,15 @@ void game::init(const char* title, int x, int y, int width, int height, bool ful
         screenHeight = height;
         screenWidth = width;
         
-        // Passes map audio to playSong
         loadMapFiles();
+        mapList[0].initializeNotes();
+        std::vector<note> currentNotes = mapList[0].getNotes();
+
+        for (long unsigned int i = 0; i < currentNotes.size(); ++i){
+            std::cout << currentNotes[i].channel << "\n";
+        }
+        
+        // Plays song of first map
         if (mapList.size() > 0){    
             playSong(mapList[0].getSongPath().c_str());
         }
