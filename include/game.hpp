@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <vector>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_audio.h>
 #include <SDL2/SDL_events.h>
@@ -31,6 +32,7 @@ class game {
         int getScreenWidth(){ return screenWidth; };
         int getScreenHeight(){ return screenHeight; };
 
+        std::vector<note> currentNotes;
         static SDL_Event event;
         bool activatedReceptors[4];
 

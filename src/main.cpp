@@ -3,6 +3,7 @@
 
 int main(){
     const int targetFPS = 144;
+    const bool limitFPS = true;
     const int frameDelay = 1000/targetFPS;
 
     Uint32 frameStart;
@@ -21,7 +22,8 @@ int main(){
         frameTime = SDL_GetTicks() - frameStart;
 
         // Delays time to get a frame rate cap of 144.
-        SDL_Delay(frameDelay - ((frameDelay > frameTime) * frameTime));
+        if (limitFPS)
+            SDL_Delay(frameDelay - ((frameDelay > frameTime) * frameTime));
     }
 
     ddr.clean();

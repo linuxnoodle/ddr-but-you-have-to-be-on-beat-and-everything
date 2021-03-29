@@ -3,11 +3,11 @@
 std::vector<map> mapList;
 
 // Vector serializer, implement for mapmaking
-void writeMapFile(std::ostream& s, const std::vector<map>& data){
-     unsigned int len = data.size();
-     s.write((char*)&len, sizeof(len));
-     s.write((const char*)&data[0], len * sizeof(map));
-}
+//void writeMapFile(std::ostream& s, const std::vector<map>& data){
+//    unsigned int len = data.size();
+//    s.write((char*)&len, sizeof(len));
+//    s.write((const char*)&data[0], len * sizeof(map));
+//}
 
 int map::initializeNotes(){
     if (std::filesystem::exists(filePath)){

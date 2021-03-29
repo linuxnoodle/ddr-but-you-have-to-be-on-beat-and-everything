@@ -15,11 +15,7 @@ void game::init(const char* title, int x, int y, int width, int height, bool ful
         
         loadMapFiles();
         mapList[0].initializeNotes();
-        std::vector<note> currentNotes = mapList[0].getNotes();
-
-        for (long unsigned int i = 0; i < currentNotes.size(); ++i){
-            std::cout << currentNotes[i].channel << "\n";
-        }
+        currentNotes = mapList[0].getNotes();
         
         // Plays song of first map
         if (mapList.size() > 0){    
@@ -75,12 +71,20 @@ void game::handleEvents(){
 }
 
 void game::update(int frameTime){
-    
+
 }
 
 void game::render(){
-    SDL_RenderClear(renderer);
+    for (long unsigned int i = 0; i < currentNotes.size(); ++i){
+        SDL_Rect rect = SDL_Rect{static_cast<int>(screenWidth * 0.363 + (135 * currentNotes[i].channel)), currentNotes[i].distance, 128, currentNotes[i].length};
+        SDL_SetRenderDrawColor(renderer, 10, 10, 128, 255);
+        SDL_RenderFillRect(renderer, &rect);
+    }
     
+    SDL_RenderPresent(renderer);
+    
+    SDL_SetRenderDrawColor(renderer, 25, 25, 25, 255);
+    SDL_RenderClear(renderer);
     // Draws receptors
     for (int i = 0; i < 4; ++i){    
         if (activatedReceptors[i]){
@@ -96,8 +100,6 @@ void game::render(){
         }
         SDL_RenderCopy(renderer, receptor, NULL, &destinationRect);
     }
-    
-    SDL_RenderPresent(renderer);
 }
 
 void game::clean(){
