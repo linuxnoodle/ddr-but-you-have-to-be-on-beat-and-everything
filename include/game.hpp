@@ -29,6 +29,7 @@ class game {
         void clean();
 
         bool getIfRunning(){ return isRunning; };
+        bool getIfInMap(){ return isInMap; };
         int getScreenWidth(){ return screenWidth; };
         int getScreenHeight(){ return screenHeight; };
 
@@ -43,6 +44,6 @@ class game {
 
         SDL_Rect destinationRect;
         
-        bool isRunning;
+        bool isRunning, isInMap;
         int screenWidth, screenHeight;
 };

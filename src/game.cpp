@@ -55,13 +55,19 @@ void game::handleEvents(){
             break;
         }
         case SDL_KEYDOWN:{
-            int shouldQuit = parseKey(event.key.keysym, false, activatedReceptors);
-            if (shouldQuit)
-                isRunning = false;
+            int shouldQuit = parseKey(event.key.keysym, false, currentNotes, screenHeight, activatedReceptors);
+            switch (shouldQuit){
+                case 1:
+                    isRunning = false;
+                    break;
+                case 2:
+                    isInMap = true;
+                    break;
+            }
             break;
         }
         case SDL_KEYUP:{
-            parseKey(event.key.keysym, true, activatedReceptors);
+            parseKey(event.key.keysym, true, currentNotes, screenHeight, activatedReceptors);
             break;
         }
         default:{
@@ -71,34 +77,45 @@ void game::handleEvents(){
 }
 
 void game::update(int frameTime){
-
+    if (!isInMap) return;
+    for (long unsigned int i = 0; i < currentNotes.size(); ++i){
+        currentNotes[i].distance += frameTime * 1;
+    }
 }
 
 void game::render(){
-    for (long unsigned int i = 0; i < currentNotes.size(); ++i){
-        SDL_Rect rect = SDL_Rect{static_cast<int>(screenWidth * 0.363 + (135 * currentNotes[i].channel)), currentNotes[i].distance, 128, currentNotes[i].length};
-        SDL_SetRenderDrawColor(renderer, 10, 10, 128, 255);
-        SDL_RenderFillRect(renderer, &rect);
-    }
-    
-    SDL_RenderPresent(renderer);
-    
-    SDL_SetRenderDrawColor(renderer, 25, 25, 25, 255);
-    SDL_RenderClear(renderer);
-    // Draws receptors
-    for (int i = 0; i < 4; ++i){    
-        if (activatedReceptors[i]){
-            destinationRect.h = 100;
-            destinationRect.w = 100;
-            destinationRect.x = screenWidth * 0.373 + (135 * i);
-            destinationRect.y = screenHeight * 0.865;
-        } else {
-            destinationRect.h = 128;
-            destinationRect.w = 128;
-            destinationRect.x = screenWidth * 0.365 + (135 * i);
-            destinationRect.y = screenHeight * 0.85;
+    if (isInMap){
+        for (long unsigned int i = 0; i < currentNotes.size(); ++i){
+            if (currentNotes[i].show){
+                SDL_Rect rect = SDL_Rect{static_cast<int>(screenWidth * 0.363 + (135 * currentNotes[i].channel)), static_cast<int>(currentNotes[i].distance), 128, static_cast<int>(currentNotes[i].length)};
+                SDL_SetRenderDrawColor(renderer, 10, 10, 20, 255);
+                SDL_RenderFillRect(renderer, &rect);
+            }
         }
-        SDL_RenderCopy(renderer, receptor, NULL, &destinationRect);
+        
+        SDL_RenderPresent(renderer);
+        
+        SDL_SetRenderDrawColor(renderer, 25, 25, 25, 255);
+        SDL_RenderClear(renderer);
+        // Draws receptors
+        for (int i = 0; i < 4; ++i){    
+            if (activatedReceptors[i]){
+                destinationRect.h = 100;
+                destinationRect.w = 100;
+                destinationRect.x = screenWidth * 0.373 + (135 * i);
+                destinationRect.y = screenHeight * 0.865;
+            } else {
+                destinationRect.h = 128;
+                destinationRect.w = 128;
+                destinationRect.x = screenWidth * 0.365 + (135 * i);
+                destinationRect.y = screenHeight * 0.85;
+            }
+            SDL_RenderCopy(renderer, receptor, NULL, &destinationRect);
+        }
+    } else {
+        SDL_RenderClear(renderer);
+        SDL_SetRenderDrawColor(renderer, 25, 25, 25, 255);
+        SDL_RenderPresent(renderer);
     }
 }
 

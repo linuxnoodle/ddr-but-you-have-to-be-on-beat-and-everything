@@ -4,7 +4,9 @@
 #include <fstream>
 
 struct note {
-    int channel, length, distance, speed;
+    int channel;
+    bool show;
+    float length, distance, speed;
 };
 
 class map {
