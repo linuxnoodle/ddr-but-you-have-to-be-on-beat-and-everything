@@ -14,41 +14,31 @@ void writeMapFile(std::ostream& s, const std::vector<note>& data){
      s.write((const char*)&data[0], len * sizeof(note));
 }
 
+std::vector<note> notes;
+
+void writeNote(int channel, float length, float distance, float bpm){
+    note currentNote;
+    currentNote.channel = channel;
+    currentNote.length = length;
+    currentNote.distance = distance;
+    currentNote.speed = (1/bpm)/60;
+    currentNote.show = true;
+    notes.push_back(currentNote);
+}
+
 // Yes, I should probably make it so that you don't have to individually set the notes for everything.
 // No, I do not have enough time to do that.
 
 int main(){
-    note note1;
-    note note2;
-    note note3;
-    note note4;
+    writeNote(0, 32, 110.5, 104.23);
+    writeNote(1, 32, 142.3, 104.23);
+    writeNote(2, 32, 174.1, 104.23);
+    writeNote(3, 32, 210, 104.23);
 
-    note1.channel = 0;
-    note2.channel = 1;
-    note3.channel = 2;
-    note4.channel = 3;
+    for (unsigned long int i = 0; i < notes.size(); ++i){
+        std::cout << "channel: " << notes[i].channel << "\nlength: " << notes[i].length << "\ndistance: " << notes[i].distance << "\nspeed: " << notes[i].speed << "\nshow: " << notes[i].show << "\n\n";
+    }
 
-    note1.show = true;
-    note2.show = true;
-    note3.show = true;
-    note4.show = true;
-
-    note1.length = 32;
-    note2.length = 32;
-    note3.length = 32;
-    note4.length = 32;
-
-    note1.distance = -600;
-    note2.distance = -400;
-    note3.distance = -200;
-    note4.distance = 0;
-
-    note1.speed = 0.7;
-    note2.speed = 0.7;
-    note3.speed = 0.7;
-    note4.speed = 0.7;
-
-    std::vector<note> notes{note1, note2, note3, note4};
     std::ofstream outputMap = std::ofstream("output.map", std::ios::out);
     writeMapFile(outputMap, notes);
     return 0;

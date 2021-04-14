@@ -22,9 +22,10 @@ class game {
     public:
         void init(const char* title, int x, int y, int width, int height, bool fullscreen);
 
-        void handleEvents();
+        void handleEvents(int framesFromStart, float averageFrameTime);
         void addEvent(Uint32 type);
         void update(int frameTime);
+        void loadMap(int mapIndex);
         void render();
         void clean();
 

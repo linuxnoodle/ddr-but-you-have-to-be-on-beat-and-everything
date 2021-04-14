@@ -12,15 +12,6 @@ void game::init(const char* title, int x, int y, int width, int height, bool ful
 
         screenHeight = height;
         screenWidth = width;
-        
-        loadMapFiles();
-        mapList[0].initializeNotes();
-        currentNotes = mapList[0].getNotes();
-        
-        // Plays song of first map
-        if (mapList.size() > 0){    
-            playSong(mapList[0].getSongPath().c_str());
-        }
 
         // Loads images
         SDL_Surface *image = IMG_Load("noteskins/receptor.png");
@@ -39,13 +30,23 @@ void game::init(const char* title, int x, int y, int width, int height, bool ful
     }
 }
 
+// No error code because I'm cool :sunglasses:
+void game::loadMap(int mapIndex){
+    loadMapFiles();
+    mapList[mapIndex].initializeNotes();
+    currentNotes = mapList[mapIndex].getNotes();
+    
+    // Plays song of first map
+    playSong(mapList[mapIndex].getSongPath().c_str());
+}
+
 void game::addEvent(Uint32 type){
     SDL_Event event;
     event.type = type;
     SDL_PushEvent(&event);
 }
 
-void game::handleEvents(){
+void game::handleEvents(int framesFromStart, float averageFrameTime){
     SDL_Event event;
     SDL_PollEvent(&event);
     // Hands off keyboard handling to inputManager
@@ -55,19 +56,20 @@ void game::handleEvents(){
             break;
         }
         case SDL_KEYDOWN:{
-            int shouldQuit = parseKey(event.key.keysym, false, currentNotes, screenHeight, activatedReceptors);
+            int shouldQuit = parseKey(event.key.keysym, false, currentNotes, screenHeight, framesFromStart, averageFrameTime, activatedReceptors);
             switch (shouldQuit){
                 case 1:
                     isRunning = false;
                     break;
                 case 2:
                     isInMap = true;
+                    loadMap(0);
                     break;
             }
             break;
         }
         case SDL_KEYUP:{
-            parseKey(event.key.keysym, true, currentNotes, screenHeight, activatedReceptors);
+            parseKey(event.key.keysym, true, currentNotes, screenHeight, framesFromStart, averageFrameTime, activatedReceptors);
             break;
         }
         default:{
@@ -78,13 +80,20 @@ void game::handleEvents(){
 
 void game::update(int frameTime){
     if (!isInMap) return;
+    // Removed basing speed on frameTime, as it just brings a ton of stuttering with a frame cap.
     for (long unsigned int i = 0; i < currentNotes.size(); ++i){
-        currentNotes[i].distance += frameTime * 1;
+        currentNotes[i].distance += 0.9;
     }
 }
 
 void game::render(){
     if (isInMap){
+        // Note detection boundaries
+        SDL_SetRenderDrawColor(renderer, 2, 2, 2, 255);
+        SDL_RenderDrawLine(renderer, 0, screenHeight * 0.88, screenWidth, screenHeight * 0.88);
+        SDL_RenderDrawLine(renderer, 0, screenHeight * 0.94, screenWidth, screenHeight * 0.94);
+        
+        // Note drawing
         for (long unsigned int i = 0; i < currentNotes.size(); ++i){
             if (currentNotes[i].show){
                 SDL_Rect rect = SDL_Rect{static_cast<int>(screenWidth * 0.363 + (135 * currentNotes[i].channel)), static_cast<int>(currentNotes[i].distance), 128, static_cast<int>(currentNotes[i].length)};

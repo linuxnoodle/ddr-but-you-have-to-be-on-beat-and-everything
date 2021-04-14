@@ -1,4 +1,5 @@
 #include "../include/inputManager.hpp"
+#include <iostream>
 
 // Yes, I know that taking in seemingly random parameters doesn't look good.
 // Tried passing the whole game object, but that sent me into circular dependency hell, so this is the current solution.
@@ -6,7 +7,7 @@
 // keyUpOrDown:
 // false for down
 // true for up
-int parseKey(SDL_Keysym key, bool keyUpOrDown, std::vector<note> &notes, int screenHeight, bool (&activatedReceptors)[4]){
+int parseKey(SDL_Keysym key, bool keyUpOrDown, std::vector<note> &notes, int screenHeight, int framesFromStart, float averageFrameTime, bool (&activatedReceptors)[4]){
     if (!keyUpOrDown){
         bool justSent[] = {false, false, false, false};
         switch (key.sym){
@@ -38,9 +39,12 @@ int parseKey(SDL_Keysym key, bool keyUpOrDown, std::vector<note> &notes, int scr
                 break;
         }
         for (unsigned long int i = 0; i < notes.size(); ++i){
-            if (justSent[notes[i].channel] && activatedReceptors[notes[i].channel] && notes[i].distance > screenHeight * 0.85 && notes[i].distance < screenHeight * 0.95){
-                notes[i].show = false;
-            } 
+            if (justSent[notes[i].channel]){            
+                std::cout << notes[i].channel << ": " << notes[i].speed * framesFromStart * averageFrameTime << "\n";
+                if (activatedReceptors[notes[i].channel] && notes[i].distance > screenHeight * 0.88 && notes[i].distance < screenHeight * 0.94){
+                    notes[i].show = false;
+                } 
+            }
         }
     } else {
         switch (key.sym){

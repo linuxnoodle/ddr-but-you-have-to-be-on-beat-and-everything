@@ -7,4 +7,4 @@
 
 #include "mapManager.hpp"
 
-int parseKey(SDL_Keysym key, bool keyUpOrDown, std::vector<note> &notes, int screenHeight, bool (&receptorsActivated)[4]);
+int parseKey(SDL_Keysym key, bool keyUpOrDown, std::vector<note> &notes, int screenHeight, int framesFromStart, float averageFrameTime, bool (&receptorsActivated)[4]);
